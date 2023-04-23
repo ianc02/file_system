@@ -1007,6 +1007,39 @@ pub fn return_open_data(&self) -> [u8; 3] {
             return FileSystemResult::Ok(());
         }
     }
+
+    pub fn list_directory(&mut self) -> FileSystemResult<(usize, [[u8; MAX_FILENAME_BYTES]; MAX_FILES_STORED])>{
+        self.get_directory();
+        let mut count = 0;
+
+        let mut final_buffer = [['\0' as u8; MAX_FILENAME_BYTES]; MAX_FILES_STORED];
+        for i in self.open{
+            if i.is_none(){
+                break;
+            }
+            let mut file = i.unwrap();
+            
+            let mut name_count = 0;
+            let mut namebuffer = ['\0' as u8; MAX_FILENAME_BYTES];
+            for j in file.inode_num..MAX_FILENAME_BYTES{
+                if self.directory_buffer[j] as char != '\0'{
+                    namebuffer[name_count] = self.directory_buffer[j];
+                    name_count +=1;
+                }
+                else{
+                    break;
+                }
+            }
+            final_buffer[count] = namebuffer;
+            count +=1;
+
+
+            
+        }
+
+        return FileSystemResult::Ok((count, final_buffer));
+        
+    }
 }
 
 //Here are some sample unit tests. For this assignment, you will be running the file system entirely through unit tests. Part of the assignment is to write unit tests sufficient to demonstrate that it works.
