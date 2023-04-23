@@ -3,13 +3,13 @@
 version = 3
 
 [[package]]
-name = "ramdisk"
-version = "0.1.4"
-source = "git+https://github.com/gjf2a/ramdisk#da8347c3bbc6dd8fdbaef1c4054fc1cba9a5faf9"
-
-[[package]]
-name = "shell"
+name = "file_system"
 version = "0.1.0"
 dependencies = [
  "ramdisk",
 ]
+
+[[package]]
+name = "ramdisk"
+version = "0.1.4"
+source = "git+https://github.com/gjf2a/ramdisk#da8347c3bbc6dd8fdbaef1c4054fc1cba9a5faf9"

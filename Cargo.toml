@@ -1,5 +1,5 @@
 [package]
-name = "shell"
+name = "file_system"
 version = "0.1.0"
 edition = "2021"
 authors = [" Gabriel Ferrer gjf2a Ian Campbell ianc02"]
