@@ -1024,13 +1024,9 @@ pub fn return_open_data(&self) -> [u8; 3] {
             let mut name_count = 0;
             let mut namebuffer = ['\0' as u8; MAX_FILENAME_BYTES];
             for j in file.inode_num..file.inode_num + MAX_FILENAME_BYTES{
-                if self.directory_buffer[j] as char != '\0'{
-                    namebuffer[name_count] = self.directory_buffer[j];
-                    name_count +=1;
-                }
-                else{
-                    break;
-                }
+                
+                namebuffer[name_count] = self.directory_buffer[j];
+                name_count +=1;
             }
             final_buffer[count] = namebuffer;
             count +=1;
