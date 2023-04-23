@@ -143,7 +143,9 @@ impl<
     
 
 
-    
+    pub fn get_directory_buffer(&mut self) -> FileSystemResult<[u8; MAX_FILE_BYTES]>{
+        return FileSystemResult::Ok(self.directory_buffer);
+    }
     pub fn open_read(&mut self, filename: &str) -> FileSystemResult<usize> {
         self.get_directory();
         let mut namebuffer = ['\0'; MAX_FILENAME_BYTES];
