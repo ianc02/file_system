@@ -146,6 +146,9 @@ impl<
     pub fn get_directory_buffer(&mut self) -> FileSystemResult<[u8; MAX_FILE_BYTES]>{
         return FileSystemResult::Ok(self.directory_buffer);
     }
+    pub fn open_stuff(&mut self) -> [Option<FileInfo<MAX_FILE_BLOCKS, BLOCK_SIZE>>; MAX_OPEN]{
+        return self.open
+    }
     pub fn open_read(&mut self, filename: &str) -> FileSystemResult<usize> {
         self.get_directory();
         let mut namebuffer = ['\0'; MAX_FILENAME_BYTES];
@@ -224,7 +227,7 @@ impl<
                 }
                 fd += 1
             }
-            return FileSystemResult::Ok(fd);
+            return FileSystemResult::Ok(fd); //check to see if self.open is empty when closing files!!
         }
         return  FileSystemResult::Err(FileSystemError::FileNotFound);
 
@@ -1193,7 +1196,6 @@ mod tests {
             FileSystemResult::Err(e) => assert_eq!(e, FileSystemError::NotOpenForRead),
         }
     }
-
     #[test]
     fn test_not_open_for_write() {
         let mut sys = make_small_fs();
