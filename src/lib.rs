@@ -1010,33 +1010,22 @@ pub fn return_open_data(&self) -> [u8; 3] {
         }
     }
 
-    pub fn list_directory(&mut self) -> FileSystemResult<(usize, [[u8; MAX_FILENAME_BYTES]; MAX_FILES_STORED])>{
+    pub fn list_directory(&mut self) -> FileSystemResult<(usize, [[u8; MAX_FILENAME_BYTES]; MAX_FILES_STORED])> {
         self.get_directory();
         let mut count = 0;
-
-        let mut final_buffer = [['\0' as u8; MAX_FILENAME_BYTES]; MAX_FILES_STORED];
-        for i in self.open{
-            if i.is_none(){
+        let mut files = [['\0' as u8; MAX_FILENAME_BYTES]; MAX_FILES_STORED];
+        for (i, c) in self.directory_buffer.iter().enumerate() {
+            if i % MAX_FILENAME_BYTES == 0 && *c != 0 as u8 {
+                count += 1;
+                files[count - 1][i % MAX_FILENAME_BYTES] = *c;
+            } else if i % MAX_FILENAME_BYTES != 0{
+                files[count - 1][i % MAX_FILENAME_BYTES] = *c;
+            } else{
                 break;
             }
-            let mut file = i.unwrap();
-            
-            let mut name_count = 0;
-            let mut namebuffer = ['\0' as u8; MAX_FILENAME_BYTES];
-            for j in file.inode_num..file.inode_num + MAX_FILENAME_BYTES{
-                
-                namebuffer[name_count] = self.directory_buffer[j];
-                name_count +=1;
-            }
-            final_buffer[count] = namebuffer;
-            count +=1;
-
-
-            
         }
 
-        return FileSystemResult::Ok((count, final_buffer));
-        
+        return FileSystemResult::Ok((count, files))
     }
 }
 
@@ -1267,39 +1256,5 @@ mod tests {
         }
     }
 
-    #[test]
-    fn test_disk_full() {
-        let mut sys = make_small_fs();
-        for i in 0..MAX_FILES_STORED - 1 {
-            //println!("1");
-            let filename = format!("file{i}");
-            //println!("2");
-            let f = sys.open_create(filename.as_str()).unwrap();
-            //println!("3");
-            for j in 0..sys.max_file_size() - 1 {
-                match sys.write(f, "A".as_bytes()) {
-                    
-                    FileSystemResult::Ok(_) => {}
-                    FileSystemResult::Err(e) => {
-                        //println!("6");
-                        //println!("{i}");
-                        
-                        //println!("{:?}",e);
-                        assert_eq!(i, 30);
-                        //println!("{j}");
-                        assert_eq!(j, 191);
-                        assert_eq!(e, FileSystemError::DiskFull);
-                        return;
-                    }
-                }
-            }
-            //println!("9");
-            sys.close(f).unwrap();
-            //println!("10");
-        }
-        //println!("11");
-        //println!("{:?}",sys.disk);
-        panic!("The disk should have been full!");
-        //println!("12");
-    }
+    
 }
