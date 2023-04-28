@@ -545,7 +545,7 @@ pub fn add_new_data_to_inode(&mut self, inode_num: u8, new_data_block : u8) -> [
         }
     }
     self.file_content_buffer[index as usize] = new_data_block;
-    self.write_to_inode_table(2 + inode_start as usize / BLOCK_SIZE)
+    self.write_to_inode_table(2 + (inode_start as usize / BLOCK_SIZE))
     
 }
 
