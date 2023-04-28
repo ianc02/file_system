@@ -457,7 +457,7 @@ impl<
             let index_start = dir_index % BLOCK_SIZE;
             
 
-            if 64 - index_start < MAX_FILENAME_BYTES{
+            if BLOCK_SIZE - index_start < MAX_FILENAME_BYTES{
                 let new_dblock = self.return_open_data();
                 buffer2[new_dblock[0] as usize] |= 1 << new_dblock[1];
                 self.file_content_buffer = self.add_new_data_to_inode(0, new_dblock[2]);
@@ -484,7 +484,7 @@ impl<
                 self.disk.read(i as usize, &mut temp_buffer);
                 let mut temp_count = 0;
                 for j in temp_buffer{
-                    self.directory_buffer[temp_count + (64*bc)] = j;
+                    self.directory_buffer[temp_count + (BLOCK_SIZE*bc)] = j;
                     temp_count +=1;
                 }
                 bc +=1;
@@ -684,7 +684,7 @@ pub fn return_open_data(&self) -> [u8; 3] {
             let mut buffer = [0; BLOCK_SIZE];
             self.disk.read(*block as usize, &mut buffer);
             for (j, value) in buffer.iter().enumerate(){
-                self.directory_buffer[j + (64 * i)] = *value;
+                self.directory_buffer[j + (BLOCK_SIZE * i)] = *value;
             }
         }
         
