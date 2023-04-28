@@ -67,7 +67,7 @@ pub struct FileSystem<
     directory_buffer: [u8; MAX_FILE_BYTES],
     open_inodes: [bool; MAX_FILES_STORED],
 }
-
+//<16, 64, 255, 8, 512, 32, 8>
 impl<
         const MAX_OPEN: usize,
         const BLOCK_SIZE: usize,
@@ -894,7 +894,7 @@ pub fn return_open_data(&self) -> [u8; 3] {
                 block_full = false;
                 break;
             }
-            if num_blocks_count == NUM_BLOCKS/MAX_FILE_BLOCKS{
+            if num_blocks_count == NUM_BLOCKS/8{
                 block_full = true;
                 break;
             }
