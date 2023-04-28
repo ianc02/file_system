@@ -364,7 +364,7 @@ impl<
                     using = self.file_content_buffer[i as usize];
                 }
                 if c > 2{
-                    let block = i / MAX_FILE_BLOCKS; //CHANGED TO MAX FILE BLOCKS
+                    let block = i / 8; //CHANGED TO MAX FILE BLOCKS
                     let bit = i % 8;
                     data_buffer[block as usize] &= !(1 << bit);
                     self.file_content_buffer[i as usize] = using;
