@@ -250,7 +250,7 @@ impl<
         if buffer[0] & (1<<0) == 0 {
             let active_blocks = 2 + self.num_inode_blocks();
             for i in 0..active_blocks + 1{
-                let block = i/8; //CHANGED TO MAX FILE BLOCKS
+                let block = i/MAX_FILE_BLOCKS; //CHANGED TO MAX FILE BLOCKS
                 let bit = i%8;
                 buffer2[block] |=1<<bit;
 
@@ -363,7 +363,7 @@ impl<
                     using = self.file_content_buffer[i as usize];
                 }
                 if c > 2{
-                    let block = i / 8; //CHANGED TO MAX FILE BLOCKS
+                    let block = i / MAX_FILE_BLOCKS; //CHANGED TO MAX FILE BLOCKS
                     let bit = i % 8;
                     data_buffer[block as usize] &= !(1 << bit);
                     self.file_content_buffer[i as usize] = using;
