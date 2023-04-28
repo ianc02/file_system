@@ -248,9 +248,10 @@ impl<
         self.disk.read(DATA_FULL_BLOCK, &mut buffer2);
 
         if buffer[0] & (1<<0) == 0 {
-            let active_blocks = 2 + self.num_inode_blocks();
+            let active_blocks = 2 + self.num_inode_blocks(); // What does this do again??
             for i in 0..active_blocks + 1{
-                let block = i/MAX_FILE_BLOCKS; //CHANGED TO MAX FILE BLOCKS
+                // Did this thinking mfb was 8, so worked for that. not for 64
+                let block = i/8; //CHANGED TO MAX FILE BLOCKS
                 let bit = i%8;
                 buffer2[block] |=1<<bit;
 
