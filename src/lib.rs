@@ -895,7 +895,7 @@ pub fn return_open_data(&self) -> [u8; 3] {
                 block_full = false;
                 break;
             }
-            if num_blocks_count == NUM_BLOCKS/MAX_FILE_BLOCKS{
+            if num_blocks_count == NUM_BLOCKS/8{
                 block_full = true;
                 break;
             }
