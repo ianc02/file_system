@@ -832,14 +832,20 @@ pub fn return_open_data(&self) -> [u8; 3] {
         let mut count = 1;
         let mut block = file_to_read_from.current_block;
         let mut used_blocks = 0;
-        for i in all_inode_blocks{
-            if !(unique_blocks.contains(&(*i as usize))){
-                unique_blocks[count] = *i as usize;
-                if block == *i as usize{
+        for b in all_inode_blocks {
+            if unique_blocks.contains(&(*b as usize)) {
+
+            } else{
+                unique_blocks[count] = *b as usize;
+                if block == *b as usize {
                     used_blocks = count
                 }
-                count +=1;
+                count += 1;
+                if count == MAX_FILE_BLOCKS {
+                    break;
+                }
             }
+            
         }
 
         for i in 0..buffer.len(){
